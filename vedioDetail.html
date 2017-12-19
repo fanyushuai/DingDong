@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="./css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="./css/list-to-detail.css" />
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<div>
+				<h2>{{title}}</h2>
+			</div>
+			<div id="main">
+			    <video controls="controls" autoplay="autoplay" :src="url">
+			      <source :src="url" type="video/mp4">
+			    </video>
+		  	</div>
+		</div>
+		
+
+		<script src="./js/mui.min.js"></script>
+		<script src="vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			var vue = new Vue({
+		        el: "#main",
+		        data: {
+		          url: '',
+		          title:''
+		        },
+		        methods: {
+		          // 模拟ajax
+		          loadUrl: function(){
+		            var _this = this;
+	            	document.addEventListener('get_detail', function(event) {
+						_this.url = event.detail.url;
+					});
+		          }
+		        }
+		      });
+		      vue.loadUrl();
+		      
+		      document.addEventListener('get_detail', function(event) {
+						vue.title = event.detail.title;
+				});
+		</script>
+	</body>
+
+</html>
