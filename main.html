@@ -74,7 +74,7 @@
 
 		<div class="mui-content" id="news">
 			<!--列表信息流 开始-->
-			<div id="list" class="mui-scroll-wrapper">
+			<!--<div id="list" class="mui-scroll-wrapper">
 				<div class="mui-scroll">
 					<ul class="mui-table-view">
 						<li class="mui-table-view-cell mui-media" v-for="item in items">
@@ -91,15 +91,34 @@
 						</li>
 					</ul>
 				</div>
+			</div>-->
+			<div id="list" class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
+				        <li class="mui-table-view-cell" v-for="item in items">
+				        	<a href="javascript:;" :data-guid="item.guid" @tap="open_detail(item)">
+					            <div class="mui-table">
+					                <div class="mui-table-cell mui-col-xs-20">
+					                    <h4 class="mui-ellipsis">{{item.title}}</h4>
+					                </div>
+					                <div class="mui-table-cell mui-col-xs-2 mui-text-right">
+					                    <span class="mui-h5">{{item.author}}</span>
+					                </div>
+					            </div>
+					        </a>
+				        </li>
+				    </ul>
+				</div>
 			</div>
+			
 			<!--列表信息流 结束-->
 		</div>
 
 		<script src="./js/mui.min.js"></script>
+		<script src="./js/mui.jsonp.js"></script>
 		<script src="vue.min.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			var lastId = '',
-				minId = ''; //最新新闻的id 
+			var pageIndex = 1;
 			var webview_detail = null; //详情页webview
 			var titleNView = { //详情页原生导航配置
 				backgroundColor: '#f7f7f7', //导航栏背景色
@@ -133,7 +152,8 @@
 			 *  下拉刷新获取最新列表 
 			 */
 			function pulldownRefresh() {
-
+				news.items = [];
+				pageIndex = 1;
 				if(window.plus && plus.networkinfo.getCurrentType() === plus.networkinfo.CONNECTION_NONE) {
 					plus.nativeUI.toast('似乎已断开与互联网的连接', {
 						verticalAlign: 'top'
@@ -141,32 +161,22 @@
 					return;
 				}
 
-				//说明已有数据，目前处于下拉刷新，增加时间戳，触发服务端立即刷新，返回最新数据
-				var data = {};
-				if(lastId) { 
-					data.lastId = lastId;
-					data.time = new Date().getTime() + "";
-				}
-
 				//请求最新列表信息流
-				mui.getJSON("http://192.168.137.1:3000/newList", null, function(rsp) {
+				mui.getJSON("http://192.168.137.1:3000/newsList", null, function(rsp) {
 					mui('#list').pullRefresh().endPulldownToRefresh();
-					if(rsp && rsp.length > 0) {
-						lastId = rsp[0].id; //保存最新消息的id，方便下拉刷新时使用
-						
-						if(!minId) {//首次拉取列表时保存最后一条消息的id，方便上拉加载时使用
-							minId = rsp[rsp.length - 1].id; 										
-						}
-						news.items = convert(rsp).concat(news.items);
-					}
+					news.items = convert(rsp).concat(news.items);
 				});
-
+				/*mui.getJSONP('http://192.168.137.1:3000/newsList', null, function(rsp) {
+				    mui('#list').pullRefresh().endPulldownToRefresh();
+					news.items = convert(rsp).concat(news.items);
+				});*/
 			}
 
 			/**
 			 * 上拉加载拉取历史列表 
 			 */
 			function pullupRefresh() {
+				pageIndex = parseInt(pageIndex)+1;
 				//说明已有数据，目前处于上拉加载，传递当前minId 返回历史数据
 				/*if(minId) { 
 					data.minId = minId;
@@ -174,11 +184,14 @@
 					data.pageSize = 10;
 				}*/
 				//请求历史列表信息流
-				mui.getJSON("http://192.168.137.1:3000/newList", null, function(rsp) {
+				mui.getJSON("http://192.168.137.1:3000/newsList?pageIndex="+pageIndex, null, function(rsp) {
 					mui('#list').pullRefresh().endPullupToRefresh();
 					if(rsp && rsp.length > 0) {
-						minId = rsp[rsp.length - 1].id; //保存最后一条消息的id，上拉加载时使用
 						news.items = news.items.concat(convert(rsp));
+					}else{
+						plus.nativeUI.toast('到底了...', {
+						verticalAlign: 'top'
+					});
 					}
 				});
 			}
