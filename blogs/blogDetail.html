@@ -30,6 +30,15 @@
 		<script src="../js/mui.min.js"></script>
 		<script src="../vue.min.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+			var ip = null;
+			mui.ajax({
+                url: '../manifest.json',
+                async: false,
+                dataType:"json",
+                success: function(data) {
+                    ip = data.ip;
+                }
+            });
 			mui.init();
 
 			function getDefaultData() {
@@ -48,7 +57,7 @@
 			});
 
 			//监听自定义事件，获取新闻详情
-			document.addEventListener('get_detail', function(event) {
+			document.addEventListener('blogDetail', function(event) {
 				var guid = event.detail.guid;
 				console.log(guid);  
 				if(!guid) {
@@ -61,7 +70,7 @@
 				vm.author = event.detail.author;
 				vm.time = event.detail.time;
 				//向服务端请求文章详情内容
-				mui.ajax('http://192.168.137.1:3000/getBlog?id=' + guid, {
+				mui.ajax('http://'+ip+':3000/getBlog?id=' + guid, {
 					type:'GET',
 					dataType: 'json', //服务器返回json格式数据
 					timeout: 15000, //15秒超时

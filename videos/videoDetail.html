@@ -35,17 +35,19 @@
 		          // 模拟ajax
 		          loadUrl: function(){
 		            var _this = this;
-	            	document.addEventListener('get_detail', function(event) {
+	            	document.addEventListener('videoDetail', function(event) {
 						_this.url = event.detail.url;
+						vue.title = event.detail.title;
 					});
 		          }
 		        }
-		      });
-		      vue.loadUrl();
+		    });
+		    vue.loadUrl();
 		      
-		      document.addEventListener('get_detail', function(event) {
-						vue.title = event.detail.title;
-				});
+			document.addEventListener('videoDetail', function(event) {
+				vue.url = event.detail.url;
+				vue.title = event.detail.title;
+			});
 		</script>
 	</body>
 
