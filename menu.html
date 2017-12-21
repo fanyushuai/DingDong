@@ -37,21 +37,14 @@
 	</head>
 	<body>
 		<div class="mui-content">
-			<div class="title">侧滑导航</div>
+			<div class="title">欢迎回来</div>
 				<div class="content">
-					这是侧滑菜单示例，你可以在这里放置任何内容；关闭侧滑菜单有多种方式：
-					1.在手机屏幕任意位置快速向左滑动(swipe)；
-					2.点击本侧滑菜单页之外的任意位置;
-					3.点击如下红色按钮；
-					<span class="android-only">
-						4.Android手机按back键；5.Android手机按menu键
-					</span>。
 					<p style="margin: 10px 15px;">
-						<button id="close-btn" type="button" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px 20px;">关闭侧滑菜单</button>
+						<button id="close-btn" type="button" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px 20px;">签到</button>
 					</p>
 					
 				</div>
-				<div class="title" style="margin-bottom: 25px;">侧滑列表示例</div>
+				<div class="title" style="margin-bottom: 25px;">放松一下吧</div>
 				<ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted">
 					<li class="mui-table-view-cell">
 						<a class="mui-navigate-right" href="./news/news.html">
@@ -72,26 +65,7 @@
 				keyEventBind: {
 					backbutton: false,
 					menubutton: false
-				},preloadPages:[//缓存其他页面 
-					{ 
-						url:'news.html', 
-						id:'1', 
-						styles:{ 
-							top:'0px', 
-							bottom:'60px',
-							zindex:'1'
-						} 
-					},
-					
-					{ 
-						url:'./videos.html', 
-						id:'3', 
-						styles:{ 
-							top:'0px', 
-							bottom:'60px' 
-						} 
-					}
-				]
+				}
 			});
 			//获得侧滑主窗口webview对象
 			var main = null;

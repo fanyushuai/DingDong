@@ -1,19 +1,20 @@
-var main,menu, mask = mui.createMask(_closeMenu);
+var main,menu, mask = mui.createMask(_closeMenu),bodyHeight;
 
 function back() {
-		if(showMenu) {
-	//菜单处于显示状态，返回键应该先关闭菜单,阻止主窗口执行mui.back逻辑；
-	closeMenu();
-	return false;
-} else {
-	//菜单处于隐藏状态，执行返回时，要先close菜单页面，然后继续执行mui.back逻辑关闭主窗口；
-	menu.close('none');
-	return true;
-}
+	if(showMenu) {
+		//菜单处于显示状态，返回键应该先关闭菜单,阻止主窗口执行mui.back逻辑；
+		closeMenu();
+		return false;
+	} else {
+		//菜单处于隐藏状态，执行返回时，要先close菜单页面，然后继续执行mui.back逻辑关闭主窗口；
+		menu.close('none');
+		return true;
+	}
 }
 //plusReady事件后，自动创建menu窗口；
 mui.plusReady(function() {
 	main = plus.webview.currentWebview();
+	bodyHeight = plus.display.resolutionHeight;
 	//setTimeout的目的是等待窗体动画结束后，再执行create webview操作，避免资源竞争，导致窗口动画不流畅；
 	setTimeout(function() {
 		//侧滑菜单默认隐藏，这样可以节省内存；
@@ -30,7 +31,7 @@ mui.plusReady(function() {
 
 });
 /**
- * 显示菜单菜单
+ * 显示菜单
  */
 function openMenu() {
 	//侧滑菜单处于隐藏状态，则立即显示出来；
