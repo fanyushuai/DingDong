@@ -98,7 +98,7 @@
 		</div>
 
 		<script src="../js/mui.min.js"></script>
-		<script src="../js/mui.jsonp.js"></script>
+		<script src="../js/common.js"></script>
 		<script src="../vue.min.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			var pageIndex = 1;
@@ -113,16 +113,6 @@
 					color: '#cccccc'
 				}
 			}
-			
-			var ip = null;
-			mui.ajax({
-                url: '../manifest.json',
-                async: false,
-                dataType:"json",
-                success: function(data) {
-                    ip = data.ip;
-                }
-            });
 
 			//mui初始化，配置下拉刷新
 			mui.init({
@@ -155,7 +145,7 @@
 				}
 
 				//请求最新列表信息流
-				mui.getJSON("http://"+ip+":3000/videosList", null, function(rsp) {
+				mui.getJSON('http://'+ip+':'+port+'/videosList', null, function(rsp) {
 					mui('#list').pullRefresh().endPulldownToRefresh();
 					news.items = rsp.concat(news.items);
 				});
@@ -177,7 +167,7 @@
 					data.pageSize = 10;
 				}*/
 				//请求历史列表信息流
-				mui.getJSON("http://"+ip+":3000/videosList?pageIndex="+pageIndex, null, function(rsp) {
+				mui.getJSON('http://'+ip+':'+port+'/videosList?pageIndex='+pageIndex, null, function(rsp) {
 					mui('#list').pullRefresh().endPullupToRefresh();
 					if(rsp && rsp.length > 0) {
 						news.items = news.items.concat(rsp);

@@ -28,17 +28,9 @@
 		</div>
 
 		<script src="../js/mui.min.js"></script>
+		<script src="../js/common.js"></script>
 		<script src="../vue.min.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			var ip = null;
-			mui.ajax({
-                url: '../manifest.json',
-                async: false,
-                dataType:"json",
-                success: function(data) {
-                    ip = data.ip;
-                }
-            });
 			mui.init();
 
 			function getDefaultData() {
@@ -70,7 +62,7 @@
 				vm.author = event.detail.author;
 				vm.time = event.detail.time;
 				//向服务端请求文章详情内容
-				mui.ajax('http://'+ip+':3000/getNews?id=' + guid, {
+				mui.ajax('http://'+ip+':'+port+'/getNews?id=' + guid, {
 					type:'GET',
 					dataType: 'json', //服务器返回json格式数据
 					timeout: 15000, //15秒超时
