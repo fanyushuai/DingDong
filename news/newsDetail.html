@@ -6,6 +6,11 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="./css/list-to-detail.css" />
+		<style>
+			img{
+				max-width: 100%;
+			}
+		</style>
 	</head>
 
 	<body>
@@ -18,9 +23,7 @@
 			<div class="kr-article-content">
 				<!-- 文章作者、发布时间等信息 -->
 				<div class="kr-article-meta">
-					<div id="kr-article-author" class="kr-article-author">{{author}}</div>
-					<div class="kr-article-text">发表于</div>
-					<div id="kr-article-time" class="kr-article-time">{{time}}</div>
+					<div id="kr-article-author" class="kr-article-author">{{author}} 发表于 {{time}}</div>
 				</div>
 				<!--文章详细内容-->
 				<div id="kr-article-article" class="kr-article-article" v-html="content"></div>
@@ -29,6 +32,7 @@
 
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/common.js"></script>
+		<script src="../js/moment.js"></script>
 		<script src="../vue.min.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			mui.init();
@@ -60,7 +64,7 @@
 				vm.cover = event.detail.cover;
 				vm.title = event.detail.title;
 				vm.author = event.detail.author;
-				vm.time = event.detail.time;
+				vm.time = moment(event.detail.time, "YYYYMMDD").fromNow();
 				//向服务端请求文章详情内容
 				mui.ajax('http://'+ip+':'+port+'/getNews?id=' + guid, {
 					type:'GET',
