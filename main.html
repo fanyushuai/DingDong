@@ -39,4 +39,11 @@
 	</body>
 	<script src="./js/mui.min.js"></script>
 	<script src="./js/sideslipNav.js"></script>
+	<script type="text/javascript" src="js/socket.io.slim.js" ></script>
+	<script>
+		var socket=io.connect('192.168.137.1:8080'),
+		socket.on('reciveMsg',function(msg){
+        	console.log(msg)
+    	})
+	</script>
 </html>
